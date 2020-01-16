@@ -48,7 +48,7 @@ namespace SSPBeerRapport.Data
 
         private async Task<MessageModel> SendRequestAsync(Coordinate location)
         {
-            string apiUrl = "http://localhost:7071/api/request";
+            string apiUrl = "https://beerapissp.azurewebsites.net/api/request";
             string serverResponse = "";
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -90,7 +90,7 @@ namespace SSPBeerRapport.Data
 
         private async Task<string> RetrieveImageAsync(string id)
         {
-            string apiUrl = "http://localhost:7071/api/FetchRapport";
+            string apiUrl = "https://beerapissp.azurewebsites.net/api/FetchRapport";
             string serverResponse = "";
 
             Dictionary<string, string> parameters = new Dictionary<string, string>

@@ -10,7 +10,7 @@ namespace QueueAPI
 {
     public static class QueueTrigger
     {
-        [FunctionName("QueueTrigger")]
+        [FunctionName("queue")]
         public static async void Run([QueueTrigger("beerrapport", Connection = "AzureWebJobsStorage")]string myQueueItem, ILogger log)
         {
             log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
