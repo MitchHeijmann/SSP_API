@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="IIS Web Application Name" description="" value="SSPBeerRapport" tags="IisApp">
+  <parameter name="IIS Web Application Name" description="" value="BeerRapportSSP" tags="IisApp">
     <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Mitch\\Documents\\GitHub\\ServerSideProgrammingSite\\SSPBeerRapport\\obj\\Release\\netcoreapp3\.0\\PubTmp\\Out\\$" />
   </parameter>
 </parameters>

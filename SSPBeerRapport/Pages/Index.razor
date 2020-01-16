@@ -14,22 +14,30 @@
 
 <div id="geolocationID">
 
-        <p>Longitude: <span id="longitudeHTML"></span></p>
-        <p>Latidude: <span id="latidudeHTML"></span></p>
+    <p>Longitude: <span id="longitudeHTML"></span></p>
+    <p>Latidude: <span id="latidudeHTML"></span></p>
 
-        <p>Copy longitude & Latidude</p>
+    <p>Copy longitude & Latidude</p>
 
-        <form>
-            Longitude: <input type="text" @bind="geoLocation.Longitude"/>
-            Latidude: <input type="text" @bind="geoLocation.Latitude" />
+    <form>
+        Longitude: <input type="text" @bind="geoLocation.Longitude" />
+        Latidude: <input type="text" @bind="geoLocation.Latitude" />
         <RadzenButton Click="@(async (args) => await GenerateRapport())" Text="Generate Rapport" Style="margin-bottom: 20px; width: 150px" />
-            
-        </form>
+
+    </form>
 </div>
 
+@if (loading)
+{
+    <img src="/img/MajesticImaginativeAustraliankelpie-mobile.jpg" />
+}
 @if (imageLoaded)
 {
-    <img src="@ImageURL" alt="Italian Trulli">
+    <img src="@ImageURL" alt="">
+}
+@if (error)
+{
+    <p>Kan momenteel geen gegevens ophalen</p>
 }
 
 
@@ -38,6 +46,8 @@
     Coordinate geoLocation = new Coordinate();
     string ImageURL;
     bool imageLoaded = false;
+    bool loading = false;
+    bool error = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -50,9 +60,18 @@
 
     public async Task GenerateRapport()
     {
+        loading = true;
+        StateHasChanged();
         ImageURL = string.Empty;
         ImageURL = await service.MakeBeerRapport(geoLocation).ConfigureAwait(true);
         //Task.Run(StateHasChanged);
+        loading = false;
+        if (string.IsNullOrEmpty(ImageURL))
+        {
+            error = true;
+            StateHasChanged();
+            return;
+        }
         imageLoaded = true;
         StateHasChanged();
         await Task.Run(StateHasChanged);
