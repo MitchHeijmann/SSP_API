@@ -1,0 +1,91 @@
+﻿@page "/"
+@namespace SSPBeerRapport.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSPBeerRapport</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
+    </app>
+
+    <script src="_framework/blazor.server.js"></script>
+
+    <script>
+        function getLocation() {
+            navigator.geolocation.getCurrentPosition(testGeo);
+            console.log("getLocation: invoke next");
+            //DotNet.invokeMethodAsync('SSPBeerRapport', 'CSCallBackMethod');
+        };
+
+
+        function testGeo(position) {
+            console.log('invoke');
+            console.log(position.longitude);
+            document.getElementById("longitudeHTML").innerHTML = position.coords.longitude;
+            document.getElementById("latidudeHTML").innerHTML = position.coords.latitude;
+            //DotNet.invokeMethodAsync('SSPBeerRapport', 'CSCallBackMethod', String(longitude), String(position.coords.latitude));
+            console.log('geinvoked toch');
+            //window.location.replace('?longitude=' + position.coords.longitude + '&latitude=' + position.coords.latitude);
+        };
+
+        function loadGeo() {
+            navigator.geolocation.getCurrentPosition(testGeo);
+        }
+
+        function kut(position) {
+            document.getElementById("longitude").innerHTML = position.longitude;
+            document.getElementById("latidude").innerHTML = position.latitude;
+        }
+
+        function returnGeo() {
+            var long = window.location;
+            console.log(long);
+            return long;
+        };
+    </script>
+
+    <script>
+   
+    </script>
+
+
+
+
+    @*<script>
+            function getGeo(test) {
+                var long = '';
+                var lat = '';
+                if ('geolocation' in navigator) {
+                    console.log('geolocation avaiable');
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        console.log(position.coords.latitude);
+                        console.log(position.coords.longitude);
+                        long = position.coords.longitude;
+                        lat = position.coords.latitude;
+                        console.log(long);
+
+                    });
+                    return long;
+                }
+                else {
+                    console.log('geolocation not available');
+                    return 'fout';
+                }
+                console.log('Voor return is log: ' + long);
+                //return long;
+            }
+
+        </script>*@
+    <br /><br />
+    <button  onclick="getLocation()">Get Location</button>
+</body>
+</html>

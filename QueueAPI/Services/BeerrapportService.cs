@@ -32,8 +32,6 @@ namespace QueueAPI.Services
             if (BeerRapport == null)
                 return;
 
-            
-
             APIRepository repository = new APIRepository();
             BeerRapport.MapURL = await repository.GetMapURL(message.Location);
             BeerRapport.ImageBase64 = DrawImage((imageText, (2, 8)));
@@ -49,9 +47,9 @@ namespace QueueAPI.Services
         {
             if (BeerRapport.TempMin > 14 || BeerRapport.TempMax > 14 || BeerRapport.Temp > 14)
             {
-                return $"BIER TIJD! Met een geweldige temperatuur van {BeerRapport.Temp} graden!";
+                return $"BIER TIJD! Het is {BeerRapport.Temp} graden. ";
             }
-            return $"Helaas, {BeerRapport.Temp} graden is wat te koud!";  
+            return $"Helaas, {BeerRapport.Temp} graden is wat te koud voor bier.";
         }
 
         private string DrawImage(params (string text, (float x, float y) position)[] texts)
@@ -60,16 +58,24 @@ namespace QueueAPI.Services
             var memoryStream = new MemoryStream();
             var image = Image.Load(data);
 
-            image
-                .Clone(img =>
-                {
-                    foreach (var (text, (x, y)) in texts)
-                    {
-                        
-                        img.DrawText(text, SystemFonts.CreateFont("Verdana", 18), Rgba32.Red, new PointF(x, y));
-                    }
-                })
-                .SaveAsPng(memoryStream);
+            try
+            {
+                image
+    .Clone(img =>
+    {
+        foreach (var (text, (x, y)) in texts)
+        {
+
+            img.DrawText(text, SystemFonts.CreateFont("Verdana", 18), Rgba32.Red, new PointF(x, y));
+        }
+    })
+    .SaveAsPng(memoryStream);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             memoryStream.Position = 0;
             byte[] bytes = memoryStream.ToArray();
@@ -103,7 +109,7 @@ namespace QueueAPI.Services
                     await blob.UploadFromStreamAsync(stream).ConfigureAwait(false);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }

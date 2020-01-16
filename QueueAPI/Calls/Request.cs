@@ -14,16 +14,16 @@ namespace QueueAPI
 {
     public static class Request
     {
-        [FunctionName("Request")]
+        [FunctionName("request")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             string longitude, latidude;
             
             try
             {
-                longitude = req.Query["long"];
+                longitude = req.Query["lon"];
                 latidude = req.Query["lat"];
             }
             catch { return new BadRequestResult(); }

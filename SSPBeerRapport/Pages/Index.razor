@@ -1,0 +1,62 @@
+﻿@page "/"
+
+@using SSPBeerRapport.Models;
+@using SSPBeerRapport.Data;
+@using Radzen.Blazor;
+
+@inject APIService service;
+
+
+
+<h3>Beer Time?</h3>
+
+
+
+<div id="geolocationID">
+
+        <p>Longitude: <span id="longitudeHTML"></span></p>
+        <p>Latidude: <span id="latidudeHTML"></span></p>
+
+        <p>Copy longitude & Latidude</p>
+
+        <form>
+            Longitude: <input type="text" @bind="geoLocation.Longitude"/>
+            Latidude: <input type="text" @bind="geoLocation.Latitude" />
+        <RadzenButton Click="@(async (args) => await GenerateRapport())" Text="Generate Rapport" Style="margin-bottom: 20px; width: 150px" />
+            
+        </form>
+</div>
+
+@if (imageLoaded)
+{
+    <img src="@ImageURL" alt="Italian Trulli">
+}
+
+
+@code
+{
+    Coordinate geoLocation = new Coordinate();
+    string ImageURL;
+    bool imageLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ImageURL = "";
+        //locationBlazor = await locationService.GetLocationAsync();
+        //ImageURL = await service.MakeBeerRapport(new Coordinate { Latitude = "52.38", Longitude = "4.62" });
+
+    }
+
+
+    public async Task GenerateRapport()
+    {
+        ImageURL = string.Empty;
+        ImageURL = await service.MakeBeerRapport(geoLocation).ConfigureAwait(true);
+        //Task.Run(StateHasChanged);
+        imageLoaded = true;
+        StateHasChanged();
+        await Task.Run(StateHasChanged);
+
+    }
+}
+
